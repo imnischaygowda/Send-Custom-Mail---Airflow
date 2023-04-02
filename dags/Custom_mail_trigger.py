@@ -12,18 +12,14 @@ from sqlalchemy import create_engine
 from airflow.utils.dates import days_ago
 
 
-
-# local_tz = pendulum.timezone("US/Eastern")
-
-
 # DAG structure
 default_args = {
-    'owner': 'nischay',
+    'owner': 'you',
     'depends_on_past': False,
     'start_date': datetime(2023,3,26),
     'end_date': datetime(2023,3,31),
     # 'start_date': dt.datetime.today(),
-    'email': ['nischaygowda105@gmail.com'],
+    'email': ['sender@gmail.com'],
     # 'email_on_failure': True,
     # 'email_on_retry': False,
     # 'retries': 1,
@@ -31,14 +27,9 @@ default_args = {
 }
 
 dag = DAG(
-    dag_id='Automated_Email_Test_1',
+    dag_id='Your_DAG_name',
     default_args=default_args,
-    description='Weather Data ETL process 1-min',
-    # schedule_interval='@daily',
-    # schedule_interval='@hourly',
-    # At every 30th minute
-    # schedule_interval='*/30 * * * *',
-    # At minute 0 past every hour.
+    description='DAG description',
     # 3am, 11am, and 7pm daily
     # by default it takes PST time.
     schedule_interval= '0 3,11,19 * * *',
@@ -56,25 +47,22 @@ def send_email():
 
     body = ''' Hi Team, \n Please find the link attached below.
                 \n
-             https://app.powerbi.com/groups/me/reports/b8c605a3-fd4b-4f06-8266-2b939f7f3bed?ctid=41f88ecb-ca63-404d-97dd-ab0a169fd138&pbi_source=linkShare 
-             
-             \n
-             \n
+                 Body Text
+                \n
     Regards and Thank you, \n
-    Nischay Gowda
+    Your Name
     ''' 
     msg = MIMEMultipart()
 
-    msg['Subject'] = 'Airflow Alert - Dashboard Link'
-    msg['From'] = "nischaygowda105@gmail.com"
-    recipients = 'nischaygowda777@gmail.com'
+    msg['Subject'] = 'Mail Subject'
+    msg['From'] = "sender@gmail.com"
+    # add mutpltile emails in this way - "email1, email2"
+    recipients = "reciever1@gmail.com, reciever2@gmail.com"
     msg['To'] = (', ').join(recipients.split(','))
-
     msg.attach(MIMEText(body,'plain'))
-
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login("nischaygowda105@gmail.com", 'guzyeprtvmimboid')
+    server.login("sender@gmail.com", 'Application_password')
     server.send_message(msg)
     server.quit()
 
