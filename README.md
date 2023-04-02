@@ -1,2 +1,2 @@
-# Send-Custom-Mail---Airflow
+# Send-Custom-Mail-Airflow
 Custom Mail scheduler using Airflow
